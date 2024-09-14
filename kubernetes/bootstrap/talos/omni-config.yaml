@@ -26,9 +26,9 @@ patches:
 ---
 kind: ControlPlane
 machines:
+  - 4f5dbcfa-e6eb-e09b-4b0c-063c4a634059
   - 2a9e3384-eb37-4dcf-b261-322918e29a27
   - 6d267b27-cbfa-4121-b714-ba0fc9d0eeb5
-  - 4f5dbcfa-e6eb-e09b-4b0c-063c4a634059
 # Controller patches
 patches:
   - # Force nameserver
@@ -51,6 +51,30 @@ machines:
   - a1f73783-9bf6-4842-a0e9-aa8eb41f9fb0
   - 6dd290e0-22e3-459a-b878-6bbf92f15181
 
+---
+kind: Machine
+systemExtensions:
+    - siderolabs/drbd
+    - siderolabs/iscsi-tools
+    - siderolabs/util-linux-tools
+    - siderolabs/xen-guest-agent
+name: 4f5dbcfa-e6eb-e09b-4b0c-063c4a634059
+install:
+  disk: "/dev/xvda"
+patches:
+  - # Add network Config
+    name: network-setup
+    inline:
+      machine:
+        network:
+          hostname: Black
+          interfaces:
+            - deviceSelector:
+                physical: true
+              dhcp: true
+              mtu: 1500
+              vip:
+                ip: "10.0.0.50"
 ---
 kind: Machine
 systemExtensions:
@@ -90,30 +114,6 @@ patches:
       machine:
         network:
           hostname: Cloud-arm-2
-          interfaces:
-            - deviceSelector:
-                physical: true
-              dhcp: true
-              mtu: 1500
-              vip:
-                ip: "10.0.0.50"
----
-kind: Machine
-systemExtensions:
-    - siderolabs/drbd
-    - siderolabs/iscsi-tools
-    - siderolabs/util-linux-tools
-    - siderolabs/xen-guest-agent
-name: 4f5dbcfa-e6eb-e09b-4b0c-063c4a634059
-install:
-  disk: "/dev/xvda"
-patches:
-  - # Add network Config
-    name: network-setup
-    inline:
-      machine:
-        network:
-          hostname: Black
           interfaces:
             - deviceSelector:
                 physical: true
