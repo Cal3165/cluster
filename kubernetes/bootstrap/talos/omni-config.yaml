@@ -1,6 +1,6 @@
 ---
 kind: Cluster
-name: "Cheltenham"
+name: "cheltenham"
 kubernetes:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
   version: v1.30.4
