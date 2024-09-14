@@ -26,7 +26,7 @@ bootstrap_node_inventory: []
     #   mtu: ""             # (Optional) MTU for the NIC, default is 1500
     #   manifests:          # (Optional) Additional manifests to include after MachineConfig
     #     - extra.yaml      #            See: https://www.talos.dev/v1.7/reference/configuration/extensions/extensionserviceconfig/
-    #   extension_services: # (Optional) Additional talhelper ExtensionServices (supports talenv.sops.yaml envsubst)
+    #   extension_services: # (Optional) Additional ExtensionServices
     #     - name: name
     #       configFiles:
     #         - content: |-

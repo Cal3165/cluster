@@ -58,6 +58,7 @@ tasks:
         fi
       - "while [ ! -f {{.KUBECONFIG_FILE}} ]; do omnictl kubeconfig {{.KUBECONFIG_FILE}} --break-glass -c {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}} || true; sleep 10; done"
       - "sed -i 's/server: https:\\/\\/[0-9.]*:[0-9]*/server: https:\\/\\/10.0.0.122:6443/g' {{.KUBECONFIG_FILE}}"
+      - "chmod g-r {{.KUBECONFIG_FILE}}"
     preconditions:
       - msg: Missing omniconfig file
         sh: test -f {{.OMNICONFIG_FILE}}

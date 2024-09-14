@@ -17,7 +17,7 @@ vars:
   SOPS_CONFIG_FILE: "{{.ROOT_DIR}}/.sops.yaml"
   # Binaries
   PYTHON_BIN: python3
-  CLUSTER_NAME: Cheltenham
+  CLUSTER_NAME: cheltenham
 
 env:
   KUBECONFIG: "{{.KUBECONFIG_FILE}}"
