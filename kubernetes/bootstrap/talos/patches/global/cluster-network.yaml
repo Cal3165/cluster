@@ -1,10 +1,9 @@
 cluster:
+  proxy:
+    disabled: true
   network:
     cni:
       name: none # Name of CNI to use.
-    proxy:
-      disabled: true
-
     # The pod subnet CIDR.
     podSubnets:
       - "10.69.0.0/16"
