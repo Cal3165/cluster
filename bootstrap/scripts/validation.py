@@ -30,7 +30,6 @@ def validate_python_version() -> None:
     if sys.version_info < required_version:
         raise ValueError(f"Python {sys.version_info} is below 3.11. Please upgrade.")
 
-
 def validate_ip(ip: str) -> str:
     try:
         netaddr.IPAddress(ip)
@@ -82,6 +81,10 @@ def validate_age(key: str, **_) -> None:
     if not re.match(r"^age1[a-z0-9]{0,58}$", key):
         raise ValueError(f"Invalid Age public key {key}")
 
+@required("bootstrap_cluster_name")
+def validate_cluster_name(name: str, **_) -> None:
+    if not re.match(r"^[a-z0-9-]+$", name):
+        raise ValueError(f"Invalid Cluster Name {name} needs to match [a-z0-9-]+")
 
 @required("bootstrap_node_network", "bootstrap_node_inventory")
 def validate_nodes(node_cidr: str, nodes: dict[list], **_) -> None:
@@ -104,6 +107,7 @@ def validate(data: dict) -> None:
     validate_python_version()
     validate_cli_tools(data)
     validate_age(data)
+    validate_cluster_name(data)
 
     if not data.get("skip_tests", False):
         validate_nodes(data)
