@@ -11,18 +11,18 @@ features:
   useEmbeddedDiscoveryService: True
 # Cluster patches
 patches:
-  - file: "kubernetes/bootstrap/talos/patches/global/additional-cert-sans.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/global/cluster-discovery.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/global/cluster-manifests.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/global/cluster-network.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/global/containerd.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/global/disable-search-domain.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/global/enable-kubespan.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/global/hostdns.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/global/kubelet.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/global/longhorn-local.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/global/openebs-local.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/global/sysctl.yaml"
+  - file: "patches/global/additional-cert-sans.yaml"
+  - file: "patches/global/cluster-discovery.yaml"
+  - file: "patches/global/cluster-manifests.yaml"
+  - file: "patches/global/cluster-network.yaml"
+  - file: "patches/global/containerd.yaml"
+  - file: "patches/global/disable-search-domain.yaml"
+  - file: "patches/global/enable-kubespan.yaml"
+  - file: "patches/global/hostdns.yaml"
+  - file: "patches/global/kubelet.yaml"
+  - file: "patches/global/longhorn-local.yaml"
+  - file: "patches/global/openebs-local.yaml"
+  - file: "patches/global/sysctl.yaml"
 ---
 kind: ControlPlane
 machines:
@@ -39,10 +39,10 @@ patches:
           nameservers:
             - 1.1.1.1
             - 1.0.0.1
-  - file: "kubernetes/bootstrap/talos/patches/controller/api-access.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/controller/cluster.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/controller/disable-admission-controller.yaml"
-  - file: "kubernetes/bootstrap/talos/patches/controller/etcd.yaml"
+  - file: "patches/controller/api-access.yaml"
+  - file: "patches/controller/cluster.yaml"
+  - file: "patches/controller/disable-admission-controller.yaml"
+  - file: "patches/controller/etcd.yaml"
 ---
 kind: Workers
 machines:

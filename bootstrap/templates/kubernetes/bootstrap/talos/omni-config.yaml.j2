@@ -14,7 +14,7 @@ features:
 # Cluster patches
 patches:
 #% endif %#
-  - file: "kubernetes/bootstrap/talos/patches/global/#{ file | basename }#"
+  - file: "patches/global/#{ file | basename }#"
 #% endfor %#
 ---
 kind: ControlPlane
@@ -66,7 +66,7 @@ patches:
                 tpm: {}
   #% endif %#
   #% for file in talos_patches('controller') %#
-  - file: "kubernetes/bootstrap/talos/patches/controller/#{ file | basename }#"
+  - file: "patches/controller/#{ file | basename }#"
   #% endfor %#
 ---
 kind: Workers
@@ -80,7 +80,7 @@ machines:
 # Worker patches
 patches:
 #% endif %#
-  - file: "kubernetes/bootstrap/talos/patches/worker/#{ file | basename }#"
+  - file: "patches/worker/#{ file | basename }#"
 #% endfor %#
 #% endif %#
 
@@ -179,6 +179,6 @@ patches:
         #% endfor %#
   #% endif %#
 #% for file in talos_patches('%s' % (node.name)) %#
-  - file: "kubernetes/bootstrap/talos/patches/#{ node.name }#/#{ file | basename }#"
+  - file: "patches/#{ node.name }#/#{ file | basename }#"
 #% endfor %#
 #% endfor %#
