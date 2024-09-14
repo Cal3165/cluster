@@ -56,10 +56,6 @@ def validate_node(node: dict, node_cidr: str) -> None:
         raise ValueError(f"Node {node.get('name')} has an invalid name")
     if not node.get("disk"):
         raise ValueError(f"Node {node.get('name')} is missing disk")
-    if not node.get("mac_addr"):
-        raise ValueError(f"Node {node.get('name')} is missing mac_addr")
-    if not re.match(r"(?:[0-9a-fA-F]:?){12}", node.get("mac_addr")):
-        raise ValueError(f"Node {node.get('name')} has an invalid mac_addr, is this a MAC address?")
     if node.get("address"):
         ip = validate_ip(node.get("address"))
         if netaddr.IPAddress(ip, 4) not in netaddr.IPNetwork(node_cidr):
