@@ -41,7 +41,7 @@ tasks:
         if [ -f "{{.TALOSCONFIG_FILE}}" ]; then
             rm {{.TALOSCONFIG_FILE}}
         fi
-      - until omnictl talosconfig {{.TALOSCONFIG_FILE}} --break-glass -c {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}} | bash; do sleep 10; done
+      - "while [ ! -f {{.TALOSCONFIG_FILE}} ]; do omnictl talosconfig {{.TALOSCONFIG_FILE}} --break-glass -c {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}}; sleep 10; done"
     preconditions:
       - msg: Missing omniconfig file
         sh: test -f {{.OMNICONFIG_FILE}}
@@ -56,7 +56,7 @@ tasks:
         if [ -f "{{.KUBECONFIG_FILE}}" ]; then
             rm {{.KUBECONFIG_FILE}}
         fi
-      - until omnictl kubeconfig {{.KUBECONFIG_FILE}} --break-glass -c {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}} | bash; do sleep 10; done
+      - "while [ ! -f {{.KUBECONFIG_FILE}} ]; do omnictl kubeconfig {{.KUBECONFIG_FILE}} --break-glass -c {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}}; sleep 10; done"
       - "sed -i 's/server: https:\\/\\/[0-9.]*:[0-9]*/server: https:\\/\\/10.0.0.122:6443/g' {{.KUBECONFIG_FILE}}"
     preconditions:
       - msg: Missing omniconfig file
