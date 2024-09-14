@@ -1,0 +1,215 @@
+---
+kind: Cluster
+name: "Cheltenham"
+kubernetes:
+  # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+  version: v1.30.4
+talos:
+  # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+  version: v1.7.6
+features:
+  useEmbeddedDiscoveryService: True
+# Cluster patches
+patches:
+  - file: "kubernetes/bootstrap/talos/patches/global/additional-cert-sans.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/global/cluster-discovery.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/global/cluster-manifests.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/global/cluster-network.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/global/containerd.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/global/disable-search-domain.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/global/enable-kubespan.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/global/hostdns.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/global/kubelet.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/global/longhorn-local.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/global/openebs-local.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/global/sysctl.yaml"
+---
+kind: ControlPlane
+machines:
+  - 2a9e3384-eb37-4dcf-b261-322918e29a27
+  - 6d267b27-cbfa-4121-b714-ba0fc9d0eeb5
+  - 4f5dbcfa-e6eb-e09b-4b0c-063c4a634059
+# Controller patches
+patches:
+  - # Force nameserver
+    name: dns-server
+    inline:
+      machine:
+        network:
+          nameservers:
+            - 1.1.1.1
+            - 1.0.0.1
+  - file: "kubernetes/bootstrap/talos/patches/controller/api-access.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/controller/cluster.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/controller/disable-admission-controller.yaml"
+  - file: "kubernetes/bootstrap/talos/patches/controller/etcd.yaml"
+---
+kind: Workers
+machines:
+  - 5e5e6063-03f5-fd08-c10c-0b2c2f1f300e
+  - 87ff08dd-54aa-ebdf-97ff-9143b422ce58
+  - a1f73783-9bf6-4842-a0e9-aa8eb41f9fb0
+  - 6dd290e0-22e3-459a-b878-6bbf92f15181
+
+---
+kind: Machine
+systemExtensions:
+    - siderolabs/drbd
+    - siderolabs/iscsi-tools
+    - siderolabs/util-linux-tools
+name: 2a9e3384-eb37-4dcf-b261-322918e29a27
+install:
+  disk: "/dev/sda"
+patches:
+  - # Add network Config
+    name: network-setup
+    inline:
+      machine:
+        network:
+          hostname: Cloud-arm-1
+          interfaces:
+            - deviceSelector:
+                physical: true
+              dhcp: true
+              mtu: 1500
+              vip:
+                ip: "10.0.0.50"
+---
+kind: Machine
+systemExtensions:
+    - siderolabs/drbd
+    - siderolabs/iscsi-tools
+    - siderolabs/util-linux-tools
+name: 6d267b27-cbfa-4121-b714-ba0fc9d0eeb5
+install:
+  disk: "/dev/sda"
+patches:
+  - # Add network Config
+    name: network-setup
+    inline:
+      machine:
+        network:
+          hostname: Cloud-arm-2
+          interfaces:
+            - deviceSelector:
+                physical: true
+              dhcp: true
+              mtu: 1500
+              vip:
+                ip: "10.0.0.50"
+---
+kind: Machine
+systemExtensions:
+    - siderolabs/drbd
+    - siderolabs/iscsi-tools
+    - siderolabs/util-linux-tools
+    - siderolabs/xen-guest-agent
+name: 4f5dbcfa-e6eb-e09b-4b0c-063c4a634059
+install:
+  disk: "/dev/xvda"
+patches:
+  - # Add network Config
+    name: network-setup
+    inline:
+      machine:
+        network:
+          hostname: Black
+          interfaces:
+            - deviceSelector:
+                physical: true
+              dhcp: true
+              mtu: 1500
+              vip:
+                ip: "10.0.0.50"
+---
+kind: Machine
+systemExtensions:
+    - siderolabs/drbd
+    - siderolabs/iscsi-tools
+    - siderolabs/util-linux-tools
+    - siderolabs/xen-guest-agent
+name: 5e5e6063-03f5-fd08-c10c-0b2c2f1f300e
+install:
+  disk: "/dev/xvda"
+patches:
+  - # Add network Config
+    name: network-setup
+    inline:
+      machine:
+        network:
+          hostname: White
+          interfaces:
+            - deviceSelector:
+                physical: true
+              dhcp: true
+              mtu: 1500
+---
+kind: Machine
+systemExtensions:
+    - siderolabs/drbd
+    - siderolabs/iscsi-tools
+    - siderolabs/util-linux-tools
+    - siderolabs/xen-guest-agent
+name: 87ff08dd-54aa-ebdf-97ff-9143b422ce58
+install:
+  disk: "/dev/xvda"
+patches:
+  - # Add network Config
+    name: network-setup
+    inline:
+      machine:
+        network:
+          hostname: N100
+          interfaces:
+            - deviceSelector:
+                physical: true
+              dhcp: true
+              mtu: 1500
+---
+kind: Machine
+systemExtensions:
+    - siderolabs/drbd
+    - siderolabs/iscsi-tools
+    - siderolabs/util-linux-tools
+    - siderolabs/qemu-guest-agent
+    - siderolabs/amd-ucode
+    - siderolabs/amdgpu-firmware
+name: a1f73783-9bf6-4842-a0e9-aa8eb41f9fb0
+install:
+  disk: "/dev/sda"
+patches:
+  - # Add network Config
+    name: network-setup
+    inline:
+      machine:
+        network:
+          hostname: Datto-1
+          interfaces:
+            - deviceSelector:
+                physical: true
+              dhcp: true
+              mtu: 1500
+---
+kind: Machine
+systemExtensions:
+    - siderolabs/drbd
+    - siderolabs/iscsi-tools
+    - siderolabs/util-linux-tools
+    - siderolabs/qemu-guest-agent
+    - siderolabs/amd-ucode
+    - siderolabs/amdgpu-firmware
+name: 6dd290e0-22e3-459a-b878-6bbf92f15181
+install:
+  disk: "/dev/sda"
+patches:
+  - # Add network Config
+    name: network-setup
+    inline:
+      machine:
+        network:
+          hostname: Datto-2
+          interfaces:
+            - deviceSelector:
+                physical: true
+              dhcp: true
+              mtu: 1500

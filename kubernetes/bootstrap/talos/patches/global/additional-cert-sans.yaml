@@ -1,0 +1,8 @@
+cluster:
+  apiServer:
+    certSANs: &sans
+      - "10.0.0.50"
+      - 127.0.0.1 # KubePrism
+      - "cluster.notusa.uk"
+machine:
+  certSANs: *sans

@@ -1,0 +1,10 @@
+cluster:
+  network:
+    cni:
+      name: none # Name of CNI to use.
+    # The pod subnet CIDR.
+    podSubnets:
+      - "10.69.0.0/16"
+    # The service subnet CIDR.
+    serviceSubnets:
+      - "10.96.0.0/16"

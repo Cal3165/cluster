@@ -3,11 +3,11 @@
 version: "3"
 
 vars:
-  TALHELPER_CLUSTER_DIR: "{{.KUBERNETES_DIR}}/bootstrap/talos/clusterconfig"
-  TALHELPER_SECRET_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml"
-  TALHELPER_CONFIG_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talconfig.yaml"
+  CLUSTER_DIR: "{{.KUBERNETES_DIR}}/bootstrap/talos/clusterconfig"
+  OMNI_CLUSTER_CONFIG_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/omni-config.yaml"
   HELMFILE_FILE: "{{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml"
-  TALOSCONFIG_FILE: "{{.TALHELPER_CLUSTER_DIR}}/talosconfig"
+  TALOSCONFIG_FILE: "{{.CLUSTER_DIR}}/talosconfig"
+  OMNICONFIG_FILE: "{{.CLUSTER_DIR}}/omniconfig"
 
 env:
   TALOSCONFIG: "{{.TALOSCONFIG_FILE}}"
@@ -18,20 +18,16 @@ tasks:
     desc: Bootstrap the Talos cluster
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
     cmds:
-      - |
-        if [ ! -f "{{.TALHELPER_SECRET_FILE}}" ]; then
-            talhelper gensecret > {{.TALHELPER_SECRET_FILE}}
-            sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}
-        fi
-      - talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
-      - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--insecure" | bash
-      - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
+      - omnictl cluster template sync -f {{.OMNI_CLUSTER_CONFIG_FILE}} --omniconfig {{.OMNICONFIG_FILE}}
+      - until omnictl talosconfig {{.TALOSCONFIG_FILE}} --break-glass -c {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}} | bash; do sleep 10; done
       - task: fetch-kubeconfig
       - task: install-helm-apps
       - talosctl health --server=false
     preconditions:
-      - msg: Missing talhelper config file
-        sh: test -f {{.TALHELPER_CONFIG_FILE}}
+      - msg: Missing cluster config file
+        sh: test -f {{.OMNI_CLUSTER_CONFIG_FILE}}
+      - msg: Missing omniconfig file
+        sh: test -f {{.OMNICONFIG_FILE}}
       - msg: Missing Sops config file
         sh: test -f {{.SOPS_CONFIG_FILE}}
       - msg: Missing Sops Age key file
@@ -40,10 +36,10 @@ tasks:
   fetch-kubeconfig:
     desc: Fetch kubeconfig
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
-    cmd: until talhelper gencommand kubeconfig --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="{{.ROOT_DIR}} --force" | bash; do sleep 10; done
+    cmd: until omnictl kubeconfig {{.CLUSTER_DIR}} --break-glass -c {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}} | bash; do sleep 10; done
     preconditions:
-      - msg: Missing talhelper config file
-        sh: test -f {{.TALHELPER_CONFIG_FILE}}
+      - msg: Missing omniconfig file
+        sh: test -f {{.OMNICONFIG_FILE}}
 
   install-helm-apps:
     desc: Bootstrap core apps needed for Talos
@@ -94,8 +90,8 @@ tasks:
     desc: Resets nodes back to maintenance mode
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
     prompt: This will destroy your cluster and reset the nodes back to maintenance mode... continue?
-    cmd: talhelper gencommand reset --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--reboot {{- if eq .CLI_FORCE false }} --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL{{ end }} --graceful=false --wait=false" | bash
+    cmd: omnictl cluster delete {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}}
 
   .reset:
     internal: true
-    cmd: rm -rf {{.TALHELPER_CLUSTER_DIR}} {{.TALHELPER_SECRET_FILE}} {{.TALHELPER_CONFIG_FILE}}
+    cmd: rm -rf {{.CLUSTER_DIR}} {{.OMNI_CLUSTER_CONFIG_FILE}}
