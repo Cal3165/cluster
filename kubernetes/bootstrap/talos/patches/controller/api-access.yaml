@@ -7,3 +7,4 @@ machine:
         - os:reader
       allowedKubernetesNamespaces:
         - system-upgrade
+        - kube-system

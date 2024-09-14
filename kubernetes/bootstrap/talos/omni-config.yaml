@@ -8,7 +8,7 @@ talos:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
   version: v1.7.6
 features:
-  useEmbeddedDiscoveryService: True
+  useEmbeddedDiscoveryService: False
 # Cluster patches
 patches:
   - file: "patches/global/additional-cert-sans.yaml"
@@ -16,7 +16,7 @@ patches:
   - file: "patches/global/cluster-manifests.yaml"
   - file: "patches/global/cluster-network.yaml"
   - file: "patches/global/containerd.yaml"
-  - file: "patches/global/disable-search-domain.yaml"
+  - file: "patches/global/disable-admission-controller.yaml"
   - file: "patches/global/enable-kubespan.yaml"
   - file: "patches/global/hostdns.yaml"
   - file: "patches/global/kubelet.yaml"
@@ -41,7 +41,6 @@ patches:
             - 1.0.0.1
   - file: "patches/controller/api-access.yaml"
   - file: "patches/controller/cluster.yaml"
-  - file: "patches/controller/disable-admission-controller.yaml"
   - file: "patches/controller/etcd.yaml"
 ---
 kind: Workers
