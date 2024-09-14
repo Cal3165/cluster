@@ -19,7 +19,7 @@ tasks:
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
     cmds:
       - omnictl cluster template sync -f {{.OMNI_CLUSTER_CONFIG_FILE}} --omniconfig {{.OMNICONFIG_FILE}}
-      - until omnictl talosconfig {{.TALOSCONFIG_FILE}} --break-glass -c {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}} | bash; do sleep 10; done
+      - task: fetch-talosconfig
       - task: fetch-kubeconfig
       - task: install-helm-apps
       - talosctl health --server=false
@@ -33,13 +33,36 @@ tasks:
       - msg: Missing Sops Age key file
         sh: test -f {{.AGE_FILE}}
 
-  fetch-kubeconfig:
-    desc: Fetch kubeconfig
+  fetch-talosconfig:
+    desc: Fetch talosconfig
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
-    cmd: until omnictl kubeconfig {{.CLUSTER_DIR}} --break-glass -c {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}} | bash; do sleep 10; done
+    cmds:
+      - |
+        if [ -f "{{.TALOSCONFIG_FILE}}" ]; then
+            rm {{.TALOSCONFIG_FILE}}
+        fi
+      - until omnictl talosconfig {{.TALOSCONFIG_FILE}} --break-glass -c {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}} | bash; do sleep 10; done
     preconditions:
       - msg: Missing omniconfig file
         sh: test -f {{.OMNICONFIG_FILE}}
+    generates:
+      - "{{.TALOSCONFIG_FILE}}"
+
+  fetch-kubeconfig:
+    desc: Fetch kubeconfig
+    dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
+    cmds:
+      - |
+        if [ -f "{{.KUBECONFIG_FILE}}" ]; then
+            rm {{.KUBECONFIG_FILE}}
+        fi
+      - until omnictl kubeconfig {{.KUBECONFIG_FILE}} --break-glass -c {{.CLUSTER_NAME}} --omniconfig {{.OMNICONFIG_FILE}} | bash; do sleep 10; done
+      - "sed -i 's/server: https:\\/\\/[0-9.]*:[0-9]*/server: https:\\/\\/10.0.0.122:6443/g' {{.KUBECONFIG_FILE}}"
+    preconditions:
+      - msg: Missing omniconfig file
+        sh: test -f {{.OMNICONFIG_FILE}}
+    generates:
+      - "{{.KUBECONFIG_FILE}}"
 
   install-helm-apps:
     desc: Bootstrap core apps needed for Talos
