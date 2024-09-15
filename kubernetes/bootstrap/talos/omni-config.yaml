@@ -65,6 +65,8 @@ patches:
     name: network-setup
     inline:
       machine:
+        nodeLabels:
+          "location": "local"
         network:
           hostname: Black
           interfaces:
@@ -88,6 +90,8 @@ patches:
     name: network-setup
     inline:
       machine:
+        nodeLabels:
+          location: "local"
         network:
           hostname: Cloud-arm-1
           interfaces:
@@ -111,6 +115,8 @@ patches:
     name: network-setup
     inline:
       machine:
+        nodeLabels:
+          location: "cloud"
         network:
           hostname: Cloud-arm-2
           interfaces:
@@ -135,6 +141,8 @@ patches:
     name: network-setup
     inline:
       machine:
+        nodeLabels:
+          location: "local"
         network:
           hostname: White
           interfaces:
@@ -157,6 +165,8 @@ patches:
     name: network-setup
     inline:
       machine:
+        nodeLabels:
+          location: "local"
         network:
           hostname: N100
           interfaces:
@@ -181,6 +191,8 @@ patches:
     name: network-setup
     inline:
       machine:
+        nodeLabels:
+          location: "local"
         network:
           hostname: Datto-1
           interfaces:
@@ -205,6 +217,8 @@ patches:
     name: network-setup
     inline:
       machine:
+        nodeLabels:
+          location: "local"
         network:
           hostname: Datto-2
           interfaces:

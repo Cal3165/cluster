@@ -104,6 +104,12 @@ patches:
     name: network-setup
     inline:
       machine:
+        #% for label in node.labels %#
+        #% if loop.index == 1 %#
+        nodeLabels:
+        #% endif %#
+          #{ label.key }#: "#{ label.value }#"
+        #% endfor %#
         network:
           hostname: #{ node.name.capitalize() }#
           interfaces:

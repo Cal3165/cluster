@@ -2,6 +2,11 @@
 spegel:
   containerdSock: /run/containerd/containerd.sock
   containerdRegistryConfigPath: /etc/cri/conf.d/hosts
+nodeSelector:
+  {
+    "kubernetes.io/os":"linux",
+    "location": "local"
+  }
 service:
   registry:
     hostPort: 29999
