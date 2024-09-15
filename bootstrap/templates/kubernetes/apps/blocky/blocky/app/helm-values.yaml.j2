@@ -4,7 +4,7 @@ workload:
 blocky:
   enablePrometheus: true
 queryLog:
-  type: postgresql
+  type: none
 service:
   main:
     type: LoadBalancer
@@ -85,7 +85,7 @@ metrics:
       enabled: true
 cnpg:
   main:
-    enabled: true
+    enabled: false
     cluster:
       storage:
         storageClass: longhorn
