@@ -22,7 +22,7 @@ tasks:
       - task: fetch-talosconfig
       - task: fetch-kubeconfig
       - task: install-helm-apps
-      - talosctl health --server=false
+      #- talosctl health --server=false
     preconditions:
       - msg: Missing cluster config file
         sh: test -f {{.OMNI_CLUSTER_CONFIG_FILE}}

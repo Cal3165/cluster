@@ -1,5 +1,5 @@
 ---
-autoDirectNodeRoutes: true
+
 #% if bootstrap_bgp.enabled %#
 bgpControlPlane:
   enabled: true
@@ -20,7 +20,9 @@ cni:
 endpointRoutes:
   enabled: true
 envoy:
-  enabled: false
+  enabled: true
+gatewayAPI:
+  enabled: true
 hubble:
   enabled: false
 ipam:
@@ -31,7 +33,7 @@ ipv6NativeRoutingCIDR: "#{ bootstrap_pod_network.split(',')[1] }#"
 ipv6:
   enabled: true
 #% endif %#
-k8sServiceHost: 127.0.0.1
+k8sServiceHost: localhost
 k8sServicePort: 7445
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
@@ -49,7 +51,6 @@ operator:
   replicas: 1
   rollOutPods: true
 rollOutCiliumPods: true
-routingMode: native
 securityContext:
   capabilities:
     ciliumAgent:
@@ -68,3 +69,7 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
+
+## cause issues
+#autoDirectNodeRoutes: true
+#routingMode: native
