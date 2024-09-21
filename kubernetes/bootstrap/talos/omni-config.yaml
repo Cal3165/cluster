@@ -21,7 +21,6 @@ patches:
   - file: "patches/global/hostdns.yaml"
   - file: "patches/global/kubelet.yaml"
   - file: "patches/global/longhorn-local.yaml"
-  - file: "patches/global/openebs-local.yaml"
   - file: "patches/global/sysctl.yaml"
 ---
 kind: ControlPlane

@@ -7,12 +7,12 @@ resources:
   - ./coredns.yaml
   - ./jetstack.yaml
   - ./metrics-server.yaml
-  - ./openebs.yaml
   - ./postfinance.yaml
   - ./prometheus-community.yaml
   - ./spegel.yaml
   - ./stakater.yaml
   - ./truecharts.yaml
+  - ./longhorn-repo.yaml
   - ./external-dns.yaml
   - ./ingress-nginx.yaml
   - ./k8s-gateway.yaml
