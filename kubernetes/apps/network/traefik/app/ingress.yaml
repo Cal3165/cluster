@@ -1,0 +1,120 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: traefik
+spec:
+  controllerName: traefik.io/gateway-controller
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "${SECRET_DOMAIN}-cert"
+spec:
+  dnsNames:
+    - '*.notusa.uk'
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: "${CLUSTER_ISSUER}"
+  secretName: "${SECRET_DOMAIN}-cert"
+  usages:
+    - digital signature
+    - key encipherment
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: "${CLUSTER_ISSUER}"
+  name: cilium-gateway
+  namespace: kube-system
+spec:
+  gatewayClassName: cilium
+  listeners:
+    - allowedRoutes:
+        namespaces:
+          from: All
+      hostname: '*.notusa.uk'
+      name: web
+      port: 80
+      protocol: HTTP
+    - allowedRoutes:
+        namespaces:
+          from: All
+      hostname: '*.notusa.uk'
+      name: websecure
+      port: 443
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: "${SECRET_DOMAIN}-cert"
+        mode: Terminate
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: traefik
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: web
+      protocol: HTTP
+      port: 80
+
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: websecure
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: "${SECRET_DOMAIN}-cert"
+
+      allowedRoutes:
+        namespaces:
+          from: All
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: traefik-tcp-gateway
+spec:
+  gatewayClassName: traefik
+  listeners:
+  - name: ldap
+    port: 389
+    protocol: TCP
+  - name: ldaps
+    port: 636
+    protocol: TCP
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: traefik-dashboard
+spec:
+  parentRefs:
+    - name: traefik
+  hostnames:
+    - traefik.notusa.uk
+  rules:
+    - backendRefs:
+        - name: api@internal
+          group: traefik.io
+          kind: TraefikService
+      #filters:
+      #- type: ExtensionRef
+      #  extensionRef:
+      #    group: traefik.io
+      #    kind: Middleware
+      #    name: authentik
+    - filters:
+      - type: RequestRedirect
+        requestRedirect:
+          scheme: https
+          statusCode: 301

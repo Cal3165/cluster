@@ -106,20 +106,5 @@ spec:
               enabled: false
     ingress:
       main:
-        enabled: true
-        hosts:
-        - host: traefik.notusa.uk
-          paths:
-          - path: /
-            pathType: Prefix
-        integrations:
-          certManager:
-            enabled: true
-            certificateIssuer: "${CLUSTER_ISSUER}"
-          traefik:
-            enabled: true
-            entrypoints:
-            - traefik
-            forceTLS: true
-            allowCors: false
+        enabled: false
 
