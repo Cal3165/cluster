@@ -1,0 +1,109 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: traefik
+      version: 29.2.10
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    metrics:
+      main:
+        enabled: true
+    additionalArguments:
+      #- "--experimental.plugins.bouncer.moduleName=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+      #- "--experimental.plugins.bouncer.version=v1.1.16"
+      - "--providers.kubernetesgateway.experimentalchannel=true"
+    # persistence:
+    #   crowdsec-bouncer-tls:
+    #     enabled: true
+    #     type: secret
+    #     objectName: crowdsec-crowdsec-bouncer-tls
+    #     mountPath: /etc/traefik/crowdsec-certs/
+    #     expandObjectName: true
+    middlewares:
+      customRequestHeaders:
+      - name: websocket-fix
+        headers:
+        - name: X-Forwarded-Proto
+          value: "https"
+      forwardAuth:
+      - name: authentik
+        address: https://authentik-authentik-proxy.authentik.svc.cluster.local:10228/outpost.goauthentik.io/auth/traefik
+        trustForwardHeader: true
+        authResponseHeaders:
+            - X-authentik-username
+            - X-authentik-groups
+            - X-authentik-email
+            - X-authentik-name
+            - X-authentik-uid
+            - X-authentik-jwt
+            - X-authentik-meta-jwks
+            - X-authentik-meta-outpost
+            - X-authentik-meta-provider
+            - X-authentik-meta-app
+            - X-authentik-meta-version
+    service:
+      main:
+        type: ClusterIP
+      tcp:
+        ports:
+          ldap:
+            enabled: true
+            port: 389
+            targetPort: 389
+            protocol: tcp
+            forwardedHeaders:
+              enabled: false
+            tls:
+              enabled: false
+          ldaps:
+            enabled: true
+            port: 636
+            targetPort: 636
+            protocol: tcp
+            forwardedHeaders:
+              enabled: false
+            tls:
+              enabled: false
+    ingress:
+      main:
+        enabled: true
+        hosts:
+        - host: traefik.notusa.uk
+          paths:
+          - path: /
+            pathType: Prefix
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: "cloudflare-issuer"
+          traefik:
+            enabled: true
+            entrypoints:
+            - traefik
+            forceTLS: true
+            allowCors: false
+          homepage:
+            enabled: true
+            name: "Traefik"
+            href: https://traefik.notusa.uk/dashboard/
+            group: "system"
+            widget:
+              type: traefik
+              url: http://traefik-traefik.traefik.svc.cluster.local:9000
+
