@@ -122,12 +122,4 @@ spec:
             - traefik
             forceTLS: true
             allowCors: false
-          homepage:
-            enabled: true
-            name: "Traefik"
-            href: https://traefik.notusa.uk/dashboard/
-            group: "system"
-            widget:
-              type: traefik
-              url: http://traefik-traefik.traefik.svc.cluster.local:9000
 

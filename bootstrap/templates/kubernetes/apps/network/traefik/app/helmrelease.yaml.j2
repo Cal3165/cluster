@@ -122,6 +122,7 @@ spec:
             - traefik
             forceTLS: true
             allowCors: false
+          #% if homepage.enabled %#
           homepage:
             enabled: true
             name: "Traefik"
@@ -130,4 +131,5 @@ spec:
             widget:
               type: traefik
               url: http://traefik-traefik.traefik.svc.cluster.local:9000
+          #% endif %#
 
