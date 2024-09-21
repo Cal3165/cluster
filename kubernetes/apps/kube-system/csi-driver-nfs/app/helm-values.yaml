@@ -1,0 +1,25 @@
+---
+csi-driver-nfs:
+  controller:
+    runOnControlPlane: false
+    replicas: 2
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: kubernetes.io/hostname
+            labelSelector:
+                matchLabels:
+                  app: csi-nfs-controller
+  storageClass:
+    create: false
+storageClass:
+  nfs-csi:
+    provisioner: nfs.csi.k8s.io
+    annotations:
+      storageclass.kubernetes.io/is-default-class: "True"
+    enabled: true
+    parameters:
+      server: 10.0.0.11
+      share: /mnt/HDD/Apps
+    reclaimPolicy: Delete
+    volumeBindingMode: Immediate

@@ -9,3 +9,6 @@ resources:
   - ./reloader/ks.yaml
   - ./kubelet-csr-approver/ks.yaml
   - ./spegel/ks.yaml
+  #% if nfs_share.enabled %#
+  - ./csi-driver-nfs/ks.yaml
+  #% endif %#
