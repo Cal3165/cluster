@@ -43,7 +43,7 @@ spec:
     remediation:
       retries: 3
   dependsOn:
-    - traefik-crds
+    - name: traefik-crds
   values:
     metrics:
       main:
