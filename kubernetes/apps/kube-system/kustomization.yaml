@@ -10,3 +10,4 @@ resources:
   - ./kubelet-csr-approver/ks.yaml
   - ./spegel/ks.yaml
   - ./csi-driver-nfs/ks.yaml
+  - ./cloudnative-pg/ks.yaml
