@@ -16,7 +16,7 @@ storageClass:
   nfs-csi:
     provisioner: nfs.csi.k8s.io
     annotations:
-      storageclass.kubernetes.io/is-default-class: "True"
+      storageclass.kubernetes.io/is-default-class: "true"
     enabled: true
     parameters:
       server: 10.0.0.11
