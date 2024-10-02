@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: piraeus-op
-  path: ./config/default/
+  path: ./config/default
   prune: true
   sourceRef:
     kind: GitRepository
