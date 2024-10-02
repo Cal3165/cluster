@@ -8,7 +8,7 @@ resources:
   - ./prometheus-community.yaml
   - ./stakater.yaml
   - ./truecharts.yaml
-  #% if longhorn.enabled %#
+  #% if storage.longhorn.enabled %#
   - ./longhorn-repo.yaml
   #% endif %#
   #% if bootstrap_cloudflare.enabled %#

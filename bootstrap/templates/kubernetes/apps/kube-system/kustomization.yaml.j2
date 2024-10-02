@@ -10,6 +10,6 @@ resources:
   - ./kubelet-csr-approver/ks.yaml
   - ./spegel/ks.yaml
   - ./cloudnative-pg/ks.yaml
-  #% if nfs_share.enabled %#
+  #% if storage.nfs_share.enabled %#
   - ./csi-driver-nfs/ks.yaml
   #% endif %#
