@@ -3,10 +3,10 @@ kind: Cluster
 name: "cheltenham"
 kubernetes:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-  version: v1.30.4
+  version: v1.30.5
 talos:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-  version: v1.7.6
+  version: v1.8.0
 features:
   useEmbeddedDiscoveryService: False
 # Cluster patches
