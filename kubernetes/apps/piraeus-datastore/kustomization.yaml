@@ -4,3 +4,5 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./piraeus-op/ks.yaml
+  - ./piraeus-op/ks-default.yaml
+  - ./piraeus-op/ks-metrics.yaml
