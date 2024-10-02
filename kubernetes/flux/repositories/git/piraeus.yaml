@@ -1,0 +1,15 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: piraeus
+  namespace: flux-system
+spec:
+  interval: 30m
+  url: https://github.com/piraeusdatastore/piraeus-operator
+  ref:
+    branch: v2
+  ignore: |
+    # exclude all
+    /*
+    # include charts directory
+    !/charts/

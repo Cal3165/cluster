@@ -52,10 +52,10 @@ machines:
 ---
 kind: Machine
 systemExtensions:
-    - siderolabs/drbd
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
     - siderolabs/xen-guest-agent
+    - siderolabs/drbd
 name: 4f5dbcfa-e6eb-e09b-4b0c-063c4a634059
 install:
   disk: "/dev/xvda"
@@ -75,12 +75,22 @@ patches:
               mtu: 1500
               vip:
                 ip: "10.0.0.50"
+  - # Add drdb settings
+    name: drdb-setup
+    inline:
+      machine:
+        kernel:
+          modules:
+            - name: drbd
+              parameters:
+                - usermode_helper=disabled
+            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
-    - siderolabs/drbd
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
+    - siderolabs/drbd
 name: 2a9e3384-eb37-4dcf-b261-322918e29a27
 install:
   disk: "/dev/sda"
@@ -100,12 +110,22 @@ patches:
               mtu: 1500
               vip:
                 ip: "10.0.0.50"
+  - # Add drdb settings
+    name: drdb-setup
+    inline:
+      machine:
+        kernel:
+          modules:
+            - name: drbd
+              parameters:
+                - usermode_helper=disabled
+            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
-    - siderolabs/drbd
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
+    - siderolabs/drbd
 name: 6d267b27-cbfa-4121-b714-ba0fc9d0eeb5
 install:
   disk: "/dev/sda"
@@ -125,13 +145,23 @@ patches:
               mtu: 1500
               vip:
                 ip: "10.0.0.50"
+  - # Add drdb settings
+    name: drdb-setup
+    inline:
+      machine:
+        kernel:
+          modules:
+            - name: drbd
+              parameters:
+                - usermode_helper=disabled
+            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
-    - siderolabs/drbd
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
     - siderolabs/xen-guest-agent
+    - siderolabs/drbd
 name: 5e5e6063-03f5-fd08-c10c-0b2c2f1f300e
 install:
   disk: "/dev/xvda"
@@ -149,13 +179,23 @@ patches:
                 physical: true
               dhcp: true
               mtu: 1500
+  - # Add drdb settings
+    name: drdb-setup
+    inline:
+      machine:
+        kernel:
+          modules:
+            - name: drbd
+              parameters:
+                - usermode_helper=disabled
+            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
-    - siderolabs/drbd
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
     - siderolabs/xen-guest-agent
+    - siderolabs/drbd
 name: 87ff08dd-54aa-ebdf-97ff-9143b422ce58
 install:
   disk: "/dev/xvda"
@@ -173,15 +213,25 @@ patches:
                 physical: true
               dhcp: true
               mtu: 1500
+  - # Add drdb settings
+    name: drdb-setup
+    inline:
+      machine:
+        kernel:
+          modules:
+            - name: drbd
+              parameters:
+                - usermode_helper=disabled
+            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
-    - siderolabs/drbd
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
     - siderolabs/qemu-guest-agent
     - siderolabs/amd-ucode
     - siderolabs/amdgpu-firmware
+    - siderolabs/drbd
 name: a1f73783-9bf6-4842-a0e9-aa8eb41f9fb0
 install:
   disk: "/dev/sda"
@@ -199,15 +249,25 @@ patches:
                 physical: true
               dhcp: true
               mtu: 1500
+  - # Add drdb settings
+    name: drdb-setup
+    inline:
+      machine:
+        kernel:
+          modules:
+            - name: drbd
+              parameters:
+                - usermode_helper=disabled
+            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
-    - siderolabs/drbd
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
     - siderolabs/qemu-guest-agent
     - siderolabs/amd-ucode
     - siderolabs/amdgpu-firmware
+    - siderolabs/drbd
 name: 6dd290e0-22e3-459a-b878-6bbf92f15181
 install:
   disk: "/dev/sda"
@@ -225,3 +285,13 @@ patches:
                 physical: true
               dhcp: true
               mtu: 1500
+  - # Add drdb settings
+    name: drdb-setup
+    inline:
+      machine:
+        kernel:
+          modules:
+            - name: drbd
+              parameters:
+                - usermode_helper=disabled
+            - name: drbd_transport_tcp

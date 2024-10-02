@@ -96,6 +96,9 @@ systemExtensions:
     - #{ extension }#
   #% endfor %#
   #% endif %#
+  #% if storage.piraeus.enabled %#
+    - siderolabs/drbd
+  #% endif %#
 name: #{ node.node_id }#
 install:
   disk: "#{ node.disk }#"
@@ -183,6 +186,18 @@ patches:
             #% endfor %#
           #% endif %#
         #% endfor %#
+  #% endif %#
+  #% if storage.piraeus.enabled %#
+  - # Add drdb settings
+    name: drdb-setup
+    inline:
+      machine:
+        kernel:
+          modules:
+            - name: drbd
+              parameters:
+                - usermode_helper=disabled
+            - name: drbd_transport_tcp
   #% endif %#
 #% for file in talos_patches('%s' % (node.name)) %#
   - file: "patches/#{ node.name }#/#{ file | basename }#"
