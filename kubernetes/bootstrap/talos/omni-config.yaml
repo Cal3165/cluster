@@ -22,6 +22,16 @@ patches:
   - file: "patches/global/kubelet.yaml"
   - file: "patches/global/longhorn-local.yaml"
   - file: "patches/global/sysctl.yaml"
+  - # Add drdb settings
+    name: drdb-setup
+    inline:
+      machine:
+        kernel:
+          modules:
+            - name: drbd
+              parameters:
+                - usermode_helper=disabled
+            - name: drbd_transport_tcp
 ---
 kind: ControlPlane
 machines:
@@ -75,16 +85,6 @@ patches:
               mtu: 1500
               vip:
                 ip: "10.0.0.50"
-  - # Add drdb settings
-    name: drdb-setup
-    inline:
-      machine:
-        kernel:
-          modules:
-            - name: drbd
-              parameters:
-                - usermode_helper=disabled
-            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
@@ -110,16 +110,6 @@ patches:
               mtu: 1500
               vip:
                 ip: "10.0.0.50"
-  - # Add drdb settings
-    name: drdb-setup
-    inline:
-      machine:
-        kernel:
-          modules:
-            - name: drbd
-              parameters:
-                - usermode_helper=disabled
-            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
@@ -145,16 +135,6 @@ patches:
               mtu: 1500
               vip:
                 ip: "10.0.0.50"
-  - # Add drdb settings
-    name: drdb-setup
-    inline:
-      machine:
-        kernel:
-          modules:
-            - name: drbd
-              parameters:
-                - usermode_helper=disabled
-            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
@@ -179,16 +159,6 @@ patches:
                 physical: true
               dhcp: true
               mtu: 1500
-  - # Add drdb settings
-    name: drdb-setup
-    inline:
-      machine:
-        kernel:
-          modules:
-            - name: drbd
-              parameters:
-                - usermode_helper=disabled
-            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
@@ -213,16 +183,6 @@ patches:
                 physical: true
               dhcp: true
               mtu: 1500
-  - # Add drdb settings
-    name: drdb-setup
-    inline:
-      machine:
-        kernel:
-          modules:
-            - name: drbd
-              parameters:
-                - usermode_helper=disabled
-            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
@@ -249,16 +209,6 @@ patches:
                 physical: true
               dhcp: true
               mtu: 1500
-  - # Add drdb settings
-    name: drdb-setup
-    inline:
-      machine:
-        kernel:
-          modules:
-            - name: drbd
-              parameters:
-                - usermode_helper=disabled
-            - name: drbd_transport_tcp
 ---
 kind: Machine
 systemExtensions:
@@ -285,13 +235,3 @@ patches:
                 physical: true
               dhcp: true
               mtu: 1500
-  - # Add drdb settings
-    name: drdb-setup
-    inline:
-      machine:
-        kernel:
-          modules:
-            - name: drbd
-              parameters:
-                - usermode_helper=disabled
-            - name: drbd_transport_tcp
