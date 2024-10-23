@@ -3,7 +3,7 @@ kind: Cluster
 name: "#{ bootstrap_cluster_name | default('home-kubernetes', true) }#"
 kubernetes:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-  version: v1.30.5
+  version: v1.31.2
 talos:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
   version: v1.8.1
