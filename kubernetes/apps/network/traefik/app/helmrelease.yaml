@@ -45,97 +45,6 @@ spec:
   dependsOn:
     - name: traefik-crds
   values:
-    rbac:
-  main:
-    enabled: true
-    primary: true
-    clusterWide: true
-    rules:
-        main:
-          enabled: true
-          primary: true
-          clusterWide: true
-          rules:
-            - apiGroups:
-                - ""
-              resources:
-                - services
-                - endpoints
-                - secrets
-              verbs:
-                - get
-                - list
-                - watch
-            - apiGroups:
-                - extensions
-                - networking.k8s.io
-              resources:
-                - ingresses
-                - ingressclasses
-              verbs:
-                - get
-                - list
-                - watch
-            - apiGroups:
-                - extensions
-                - networking.k8s.io
-              resources:
-                - ingresses/status
-              verbs:
-                - update
-            - apiGroups:
-                - traefik.containo.us
-                - traefik.io
-              resources:
-                - middlewares
-                - middlewaretcps
-                - ingressroutes
-                - traefikservices
-                - ingressroutetcps
-                - ingressrouteudps
-                - tlsoptions
-                - tlsstores
-                - serverstransports
-                - serverstransporttcps
-              verbs:
-                - get
-                - list
-                - watch
-            - apiGroups:
-                - ""
-              resources:
-                - nodes
-              verbs:
-                - get
-                - list
-                - watch
-            - apiGroups:
-                - discovery.k8s.io
-              resources:
-                - endpointslices
-              verbs:
-                - get
-                - list
-                - watch
-            - apiGroups:
-                - gateway.networking.k8s.io
-              resources:
-                - gatewayclasses
-                - gateways
-                - httproutes
-                - tcproutes
-                - tlsroutes
-                - referencegrants
-              verbs:
-                - get
-                - list
-                - watch
-            - resources:
-                - namespaces
-              verbs:
-                - get
-                - list
-                - watch
     metrics:
       main:
         enabled: true
@@ -197,5 +106,20 @@ spec:
               enabled: false
     ingress:
       main:
-        enabled: false
+        enabled: true
+        hosts:
+        - host: traefik.notusa.uk
+          paths:
+          - path: /
+            pathType: Prefix
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: "${CLUSTER_ISSUER}"
+          traefik:
+            enabled: true
+            entrypoints:
+            - traefik
+            forceTLS: true
+            allowCors: false
 
