@@ -27,4 +27,4 @@ spec:
           containers:
             main:
               env:
-                PROVIDER_REGEX: ^(black|cloud-arm-1|cloud-arm-2|white|n100|datto-1|datto-2)$
+                PROVIDER_REGEX: ^(black|white|n100|datto-1|datto-2|nuc)$

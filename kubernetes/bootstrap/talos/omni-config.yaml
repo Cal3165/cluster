@@ -6,7 +6,7 @@ kubernetes:
   version: v1.30.5
 talos:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-  version: v1.8.0
+  version: v1.8.1
 features:
   useEmbeddedDiscoveryService: False
 # Cluster patches
@@ -35,9 +35,7 @@ patches:
 ---
 kind: ControlPlane
 machines:
-  - 4f5dbcfa-e6eb-e09b-4b0c-063c4a634059
-  - 2a9e3384-eb37-4dcf-b261-322918e29a27
-  - 6d267b27-cbfa-4121-b714-ba0fc9d0eeb5
+  - 87430a29-f047-4e4d-f164-55e12dc32882
 # Controller patches
 patches:
   - # Force nameserver
@@ -54,10 +52,11 @@ patches:
 ---
 kind: Workers
 machines:
-  - 5e5e6063-03f5-fd08-c10c-0b2c2f1f300e
-  - 87ff08dd-54aa-ebdf-97ff-9143b422ce58
-  - a1f73783-9bf6-4842-a0e9-aa8eb41f9fb0
-  - 6dd290e0-22e3-459a-b878-6bbf92f15181
+  - e292dd59-0017-5204-5bab-909141bd377a
+  - f5fd2cc9-2b9d-57fc-871e-7497045993c5
+  - 4a63d455-d4ed-df26-e3d3-2a005d3bbb7a
+  - 76841ce7-39c6-0b44-98f0-b2cad9e4bd99
+  - 194d1c01-29b0-907f-a45f-493b7ac02b58
 
 ---
 kind: Machine
@@ -66,7 +65,7 @@ systemExtensions:
     - siderolabs/util-linux-tools
     - siderolabs/xen-guest-agent
     - siderolabs/drbd
-name: 4f5dbcfa-e6eb-e09b-4b0c-063c4a634059
+name: 87430a29-f047-4e4d-f164-55e12dc32882
 install:
   disk: "/dev/xvda"
 patches:
@@ -90,59 +89,9 @@ kind: Machine
 systemExtensions:
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
-    - siderolabs/drbd
-name: 2a9e3384-eb37-4dcf-b261-322918e29a27
-install:
-  disk: "/dev/sda"
-patches:
-  - # Add network Config
-    name: network-setup
-    inline:
-      machine:
-        nodeLabels:
-          location: "local"
-        network:
-          hostname: Cloud-arm-1
-          interfaces:
-            - deviceSelector:
-                physical: true
-              dhcp: true
-              mtu: 1500
-              vip:
-                ip: "10.0.0.50"
----
-kind: Machine
-systemExtensions:
-    - siderolabs/iscsi-tools
-    - siderolabs/util-linux-tools
-    - siderolabs/drbd
-name: 6d267b27-cbfa-4121-b714-ba0fc9d0eeb5
-install:
-  disk: "/dev/sda"
-patches:
-  - # Add network Config
-    name: network-setup
-    inline:
-      machine:
-        nodeLabels:
-          location: "cloud"
-        network:
-          hostname: Cloud-arm-2
-          interfaces:
-            - deviceSelector:
-                physical: true
-              dhcp: true
-              mtu: 1500
-              vip:
-                ip: "10.0.0.50"
----
-kind: Machine
-systemExtensions:
-    - siderolabs/iscsi-tools
-    - siderolabs/util-linux-tools
     - siderolabs/xen-guest-agent
     - siderolabs/drbd
-name: 5e5e6063-03f5-fd08-c10c-0b2c2f1f300e
+name: e292dd59-0017-5204-5bab-909141bd377a
 install:
   disk: "/dev/xvda"
 patches:
@@ -166,7 +115,7 @@ systemExtensions:
     - siderolabs/util-linux-tools
     - siderolabs/xen-guest-agent
     - siderolabs/drbd
-name: 87ff08dd-54aa-ebdf-97ff-9143b422ce58
+name: f5fd2cc9-2b9d-57fc-871e-7497045993c5
 install:
   disk: "/dev/xvda"
 patches:
@@ -188,13 +137,11 @@ kind: Machine
 systemExtensions:
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
-    - siderolabs/qemu-guest-agent
-    - siderolabs/amd-ucode
-    - siderolabs/amdgpu-firmware
+    - siderolabs/xen-guest-agent
     - siderolabs/drbd
-name: a1f73783-9bf6-4842-a0e9-aa8eb41f9fb0
+name: 4a63d455-d4ed-df26-e3d3-2a005d3bbb7a
 install:
-  disk: "/dev/sda"
+  disk: "/dev/xvda"
 patches:
   - # Add network Config
     name: network-setup
@@ -214,13 +161,11 @@ kind: Machine
 systemExtensions:
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
-    - siderolabs/qemu-guest-agent
-    - siderolabs/amd-ucode
-    - siderolabs/amdgpu-firmware
+    - siderolabs/xen-guest-agent
     - siderolabs/drbd
-name: 6dd290e0-22e3-459a-b878-6bbf92f15181
+name: 76841ce7-39c6-0b44-98f0-b2cad9e4bd99
 install:
-  disk: "/dev/sda"
+  disk: "/dev/xvda"
 patches:
   - # Add network Config
     name: network-setup
@@ -230,6 +175,30 @@ patches:
           location: "local"
         network:
           hostname: Datto-2
+          interfaces:
+            - deviceSelector:
+                physical: true
+              dhcp: true
+              mtu: 1500
+---
+kind: Machine
+systemExtensions:
+    - siderolabs/iscsi-tools
+    - siderolabs/util-linux-tools
+    - siderolabs/xen-guest-agent
+    - siderolabs/drbd
+name: 194d1c01-29b0-907f-a45f-493b7ac02b58
+install:
+  disk: "/dev/xvda"
+patches:
+  - # Add network Config
+    name: network-setup
+    inline:
+      machine:
+        nodeLabels:
+          location: "local"
+        network:
+          hostname: Nuc
           interfaces:
             - deviceSelector:
                 physical: true
