@@ -23,7 +23,7 @@ spec:
   values:
     longhorn:
       persistence:
-        defaultClass: false
+        defaultClass: 
       preUpgradeChecker:
         jobEnabled: false
       defaultSettings:
