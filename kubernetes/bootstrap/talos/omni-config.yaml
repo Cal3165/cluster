@@ -36,8 +36,8 @@ patches:
 kind: ControlPlane
 machines:
   - 87430a29-f047-4e4d-f164-55e12dc32882
-  - b2961301-778f-4dcc-b2f9-73514f76b32e
-  - c5ea06b8-cc32-4279-b40b-935ecac00c8c
+  - aa6b3cb5-786a-4fe3-b7d5-3992b9e2d519
+  - 7e9671ee-a6d3-4a60-acba-671094de7176
 # Controller patches
 patches:
   - # Force nameserver
@@ -92,7 +92,7 @@ systemExtensions:
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
     - siderolabs/drbd
-name: b2961301-778f-4dcc-b2f9-73514f76b32e
+name: aa6b3cb5-786a-4fe3-b7d5-3992b9e2d519
 install:
   disk: "/dev/sda"
 patches:
@@ -117,7 +117,7 @@ systemExtensions:
     - siderolabs/iscsi-tools
     - siderolabs/util-linux-tools
     - siderolabs/drbd
-name: c5ea06b8-cc32-4279-b40b-935ecac00c8c
+name: 7e9671ee-a6d3-4a60-acba-671094de7176
 install:
   disk: "/dev/sda"
 patches:
