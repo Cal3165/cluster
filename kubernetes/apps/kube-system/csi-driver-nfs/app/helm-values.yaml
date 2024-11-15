@@ -16,10 +16,10 @@ storageClass:
   nfs-csi:
     provisioner: nfs.csi.k8s.io
     annotations:
-      storageclass.kubernetes.io/is-default-class: ""
+      storageclass.kubernetes.io/is-default-class: "true"
     enabled: true
     parameters:
-      server: 
-      share: 
+      server: 10.0.0.11
+      share: /mnt/HDD/Apps
     reclaimPolicy: Delete
     volumeBindingMode: Immediate

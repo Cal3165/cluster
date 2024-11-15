@@ -36,6 +36,8 @@ patches:
 kind: ControlPlane
 machines:
   - 87430a29-f047-4e4d-f164-55e12dc32882
+  - b2961301-778f-4dcc-b2f9-73514f76b32e
+  - c5ea06b8-cc32-4279-b40b-935ecac00c8c
 # Controller patches
 patches:
   - # Force nameserver
@@ -77,6 +79,56 @@ patches:
           location: "local"
         network:
           hostname: Black
+          interfaces:
+            - deviceSelector:
+                physical: true
+              dhcp: true
+              mtu: 1500
+              vip:
+                ip: "10.20.0.50"
+---
+kind: Machine
+systemExtensions:
+    - siderolabs/iscsi-tools
+    - siderolabs/util-linux-tools
+    - siderolabs/drbd
+name: b2961301-778f-4dcc-b2f9-73514f76b32e
+install:
+  disk: "/dev/sda"
+patches:
+  - # Add network Config
+    name: network-setup
+    inline:
+      machine:
+        nodeLabels:
+          location: "local"
+        network:
+          hostname: Cloud-arm-1
+          interfaces:
+            - deviceSelector:
+                physical: true
+              dhcp: true
+              mtu: 1500
+              vip:
+                ip: "10.20.0.50"
+---
+kind: Machine
+systemExtensions:
+    - siderolabs/iscsi-tools
+    - siderolabs/util-linux-tools
+    - siderolabs/drbd
+name: c5ea06b8-cc32-4279-b40b-935ecac00c8c
+install:
+  disk: "/dev/sda"
+patches:
+  - # Add network Config
+    name: network-setup
+    inline:
+      machine:
+        nodeLabels:
+          location: "cloud"
+        network:
+          hostname: Cloud-arm-2
           interfaces:
             - deviceSelector:
                 physical: true
