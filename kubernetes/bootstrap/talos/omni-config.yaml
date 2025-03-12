@@ -6,7 +6,7 @@ kubernetes:
   version: v1.31.2
 talos:
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-  version: v1.8.3
+  version: v1.9.5
 features:
   useEmbeddedDiscoveryService: False
 # Cluster patches
